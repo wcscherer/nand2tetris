@@ -14,4 +14,12 @@ CHIP Xor {
 
     PARTS:
     // Put your code here:
+    Nand(a=a, b=b, out=c1); //First Nand gate (a,b,c)
+    // Start Or gate
+    Nand(a=a, b=a, out=a2);    //First Nand layer of Not a
+    Nand(a=b, b=b, out=b2);    //First Nand layer of Not b
+    Nand(a=a2, b=b2, out=c2); //Output of last Nand gate
+    // Start And gate
+    Nand(a=c1, b=c2, out=c3);  //Basic Nand
+    Nand(a=c3, b=c3, out=out); //Not of And to output
 }

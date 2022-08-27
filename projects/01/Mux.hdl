@@ -15,4 +15,11 @@ CHIP Mux {
 
     PARTS:
     // Put your code here:
+    // sel and a combination 
+    Not(in=sel, out=c1);
+    And(a=c1, b=a, out=c2);
+    // sel and b combination
+    And(a=sel, b=b, out=c3);
+    // Final combination in Or
+    Or(a=c2, b=c3, out=out);
 }

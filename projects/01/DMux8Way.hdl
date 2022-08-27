@@ -16,5 +16,14 @@ CHIP DMux8Way {
     OUT a, b, c, d, e, f, g, h;
 
     PARTS:
-    // Put your code here:
+    // First layer with 1 inputs where sel = sel[0]
+    DMux(in = in, sel=sel[0], a=x1, b=x2);
+    // Second layer with 2 inputs, where sel = sel[1]
+    DMux(in = x1, sel=sel[1], a=y1, b=y3);
+    DMux(in = x2, sel=sel[1], a=y2, b=y4);
+    // Third layer with 4 inputs, where sel = sel[2]
+    DMux(in = y1, sel=sel[2], a=a, b=c);
+    DMux(in = y2, sel=sel[2], a=b, b=d);
+    DMux(in = y3, sel=sel[2], a=e, b=g);
+    DMux(in = y4, sel=sel[2], a=f, b=h);
 }

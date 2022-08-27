@@ -15,4 +15,9 @@ CHIP DMux {
 
     PARTS:
     // Put your code here:
+    // Output circuit for a
+    And(a=in, b=sel, out=c);
+    Xor(a=c, b=in, out=a);
+    // Output circuit for b
+    And(a=in, b=sel, out=b);
 }
