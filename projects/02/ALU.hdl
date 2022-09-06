@@ -42,5 +42,32 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Put you code here:
+    // x input operations zx and nx
+    Mux16(a=x, b=false, sel=zx, out=zx1);
+    Not16(in=zx1, out=notX);
+    Mux16(a=zx1, b=notX, sel=nx, out=x2);
+
+    // y input operations zy and ny
+    Mux16(a=y, b=false, sel=zy, out=zy1);
+    Not16(in=zy1, out=notY);
+    Mux16(a=zy1, b=notY, sel=ny, out=y2);   
+
+    // combination x and y operations
+    Add16(a=x2, b=y2, out=addXY);
+    And16(a=x2, b=y2, out=andXY);
+    Mux16(a=andXY, b=addXY, sel=f, out=combXY);
+
+    // output for x and y
+    Not16(in=combXY, out= notOut);
+    Mux16(a=combXY, b=notOut, sel=no, out=out, out[15]=leading1, out[0..7]=left6, out[8..15]=right6);
+
+    //  check if output is zero
+    Or8Way(in=left6, out=checkL);
+    Or8Way(in=right6, out=checkR);
+    Or(a=checkL, b=checkR, out=check0);
+    Not(in=check0, out=zr);
+
+    // check if output is < 0 - check leading digit 2s complement
+    And(a=leading1, b=true, out=ng);
 }
