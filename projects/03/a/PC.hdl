@@ -17,4 +17,16 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+    Register(in = outReset, load = true, out=outRegister, out=out);
+
+    // Increment
+    Inc16(in=outRegister, out=outInc);
+
+    // Three separate Mux for each control bit, default (a=0) is current register
+    // reset
+    Mux16(a=outLoad, b=false, sel=reset, out=outReset);
+    // load
+    Mux16(a=outP1, b=in, sel=load, out = outLoad);
+    // Increment
+    Mux16(a=outRegister, b=outInc, sel=inc, out = outP1);
 }
