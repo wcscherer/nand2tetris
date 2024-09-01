@@ -28,4 +28,22 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+
+    // Check for loading into ram 
+    DMux(in=load, sel=address[14], a=loadRam, b=loadDevices);
+
+    // Check if loading in screen, loadKeyboard not really needed
+    DMux(in=loadDevices, sel=address[13], a=loadScreen, b=loadKeyboard);
+
+    // Load ram if selected bits 0-14 (14 bits for the first 16,383 addresses)
+    RAM16K(in=in, load=loadRam, address=address[0..13], out=ramOut);
+    
+    // Load screen and keyboard if selected (13 bits for the remaining 8k bits)
+    Screen(in=in, load=loadScreen, address=address[0..12], out=screenOut);
+    Keyboard(out=keyboardOut);
+
+    // If [13] is 0, save to screen, if 1 go to keyboard output
+    Mux16(a=screenOut, b=keyboardOut, sel=address[13], out=devicesOut);
+    // If [14] is 0, save to memory, if 1 go to devices
+    Mux16(a=ramOut, b=devicesOut, sel=address[14], out=out);
 }
